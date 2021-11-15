@@ -11,7 +11,16 @@ EKS Anywhere docs https://anywhere.eks.amazonaws.com
     ```bash
     multipass exec eks -- bash
     ```
+- Change password
+  ```bash
+  sudo passwd ubuntu
+  ```
 - Install homebrew https://brew.sh/
+- Install eksctl
+  ```bash
+  brew install aws/tap/eks-anywhere
+  eksctl anywhere version
+  ```
 - Install docker https://docs.docker.com/engine/install/ubuntu/
 - Setup docker for user `ubuntu`
     ```bash
@@ -117,34 +126,50 @@ Deleting bootstrap cluster
 
 </details>
 
-Use KUBECONFIG file to verify
-```bash
-export KUBECONFIG=${PWD}/dev-cluster/dev-cluster-eks-a-cluster.kubeconfig
-kubectl get ns
-```
+- Install kubectl
+  ```bash
+  brew install kubectl
+  ```
+
+
+- Use KUBECONFIG file to verify
+  ```bash
+  export KUBECONFIG=${PWD}/dev-cluster/dev-cluster-eks-a-cluster.kubeconfig
+  kubectl get ns
+  ```
 
 - Configure LoadBalancer Kube-vip using this range and instructions https://anywhere.eks.amazonaws.com/docs/tasks/workload/loadbalance/kubevip/arp/
-```bash
-IP_START=172.18.0.100  # Use the starting IP in your range
-IP_END=172.18.0.200  # Use the ending IP in your range
-kubectl create configmap --namespace kube-system kubevip --from-literal range-global=${IP_START}-${IP_END}
-```
+  ```bash
+  IP_START=172.18.0.100  # Use the starting IP in your range
+  IP_END=172.18.0.200  # Use the ending IP in your range
+  kubectl create configmap --namespace kube-system kubevip --from-literal range-global=${IP_START}-${IP_END}
+  ```
 
-- Install Knative
-```bash
-curl -sL https://raw.githubusercontent.com/csantanapr/knative-kind/master/02-serving.sh | bash
-curl -sL https://raw.githubusercontent.com/csantanapr/knative-kind/master/02-kourier.sh | bash
-kubectl apply -f https://storage.googleapis.com/knative-nightly/serving/latest/serving-default-domain.yaml
-```
+- Install Knative https://knative.dev/docs/install/
+  ```bash
+  curl -sL https://raw.githubusercontent.com/csantanapr/knative-kind/master/02-serving.sh | bash
+  curl -sL https://raw.githubusercontent.com/csantanapr/knative-kind/master/02-kourier.sh | bash
+  kubectl apply -f https://storage.googleapis.com/knative-nightly/serving/latest/serving-default-domain.yaml
+  ```
+
+- Install Knative CLI
+  ```bash
+  brew install kn
+  ```
 
 - Create a Knative Service
-```bash
-kn service create hello-eks --port 80 --image public.ecr.aws/aws-containers/hello-eks-anywhere:latest
-```
+  ```bash
+  kn service create hello-eks --port 80 --image public.ecr.aws/aws-containers/hello-eks-anywhere:latest
+  ```
 
 - Try it out
-```bash
-SERVICE_URL=$(kubectl get ksvc hello-eks -o jsonpath='{.status.url}')
-echo "The SERVICE_ULR is $SERVICE_URL"
-curl $SERVICE_URL
-```
+  ```bash
+  SERVICE_URL=$(kubectl get ksvc hello-eks -o jsonpath='{.status.url}')
+  echo "The SERVICE_ULR is $SERVICE_URL"
+  curl $SERVICE_URL
+  ```
+
+- Install hey
+  ```bash
+  brew install hey
+  ```
