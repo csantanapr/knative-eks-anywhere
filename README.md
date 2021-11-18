@@ -159,7 +159,7 @@ Deleting bootstrap cluster
 
 - Create a Knative Service
   ```bash
-  kn service create hello-eks --port 80 --image public.ecr.aws/aws-containers/hello-eks-anywhere:latest
+  kn service create hello-eks --port 80 --image public.ecr.aws/aws-containers/hello-eks-anywhere
   ```
 
 - Try it out
